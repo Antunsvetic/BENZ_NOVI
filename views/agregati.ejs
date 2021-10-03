@@ -62,6 +62,9 @@
     text-align: center;
   }
 
+  .zauzece form{
+    display: inline;
+  }
 
 
   </style>
@@ -146,8 +149,19 @@ chart.render();
     <h4 class="DerCijena">Promijeni cijenu derivata:</h4>
     <input class="UnosKol" type="text" name="cijena" value="">
     <button type="submit" name="button">Potvrdi</button>
+
+
   </div>
 </form>
+<!-- OVO SU TIPKE ZELENA I CRVENA ZA PLIN -->
+<div class="zauzece">
+  <form action="/adminPlinZelena" method="post">
+    <button type="submit" name="button">Zelena</button>
+  </form>
+  <form action="/adminPlinCrvena" method="post">
+    <button type="submit" name="button">Crvena</button>
+  </form>
+</div>
 
 <form action="/unp" method="post">
   <div class="UNP">

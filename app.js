@@ -135,6 +135,22 @@ const pon = new Nedjelja({
 
 // pon.save();
 
+/////////////*****************ZAUZECE SCHEMA *****************//////
+
+const zauzeceSchema = {
+  agregat: String,
+  value: String
+}
+
+const Zauzece = mongoose.model("Zauzece", zauzeceSchema);
+
+const newZauzece = new Zauzece({
+  agregat: "Plin",
+  value: "red"
+});
+
+// newZauzece.save();
+
 /////////////////////////////////// ADMIN LOGIN ///////////////////////////
 //////////////*************ADMIN REGISTER**********/////////////
 // User.register({username: "admin", role: "admin"}, "PASSWORD", function(err, user) {
@@ -656,28 +672,44 @@ app.get("/agregati", function(req, res) {
   }
 });
 
+/////********* AGREGATI ADMIN PROMJENA BOJE **********/////
+
+//// PLIN ///
+//Zelena
+app.post("/adminPlinZelena", function(req, res){
+  Zauzece.updateMany({agregat: "Plin"}, {value: "green"}, function(){
+    res.redirect("/agregati");
+  })
+})
+//Crvena
+app.post("/adminPlinCrvena", function(req, res){
+  Zauzece.updateMany({agregat: "Plin"}, {value: "red"}, function(){
+    res.redirect("/agregati");
+  })
+})
+
 ////////////***** AGREGATI POST FORME ********////////////
 
 app.post("/benzin", function(req, res) {
   const stanje = req.body.stanje;
   const cijena = req.body.cijena;
 
-if (stanje <= 10000) {
-  Agregati.updateMany({
-    ime: "Benzin"
-  }, {
-    stanje: stanje,
-    cijena: cijena
-  }, function(err) {
-    if (!err) {
-      res.redirect("/agregati");
-    } else {
-      res.send("Nesto je poslo po krivu. Probajte ponovno.");
-    }
-  });
-}else {
-  res.send("Maksimalan kapacitet agregata: 10000 L. Unesite valjanu količinu!");
-}
+  if (stanje <= 10000) {
+    Agregati.updateMany({
+      ime: "Benzin"
+    }, {
+      stanje: stanje,
+      cijena: cijena
+    }, function(err) {
+      if (!err) {
+        res.redirect("/agregati");
+      } else {
+        res.send("Nesto je poslo po krivu. Probajte ponovno.");
+      }
+    });
+  } else {
+    res.send("Maksimalan kapacitet agregata: 10000 L. Unesite valjanu količinu!");
+  }
 });
 
 
@@ -698,10 +730,10 @@ app.post("/dizel", function(req, res) {
         res.send("Nesto je poslo po krivu. Probajte ponovno.");
       }
     });
-  }else {
+  } else {
     res.send("Maksimalan kapacitet agregata: 10000 L. Unesite valjanu količinu!");
   }
-  });
+});
 
 app.post("/plin", function(req, res) {
   const stanje = req.body.stanje;
@@ -720,10 +752,10 @@ app.post("/plin", function(req, res) {
         res.send("Nesto je poslo po krivu. Probajte ponovno.");
       }
     });
-  }else {
+  } else {
     res.send("Maksimalan kapacitet agregata: 10000 L. Unesite valjanu količinu!");
   }
-  });
+});
 
 app.post("/unp", function(req, res) {
   const stanje = req.body.stanje;
@@ -742,10 +774,10 @@ app.post("/unp", function(req, res) {
         res.send("Nesto je poslo po krivu. Probajte ponovno.");
       }
     });
-  }else {
+  } else {
     res.send("Maksimalan kapacitet boca: 500. Unesite valjanu količinu!");
   }
-  });
+});
 
 ////////////////////////////////////////////////////////////
 
@@ -842,14 +874,14 @@ app.post("/deleteDjelatnik", function(req, res) {
 let foundUser = 0;
 
 app.get("/djelatnik", djelatnikLoginCheck,
-ponedjeljakPrva, ponedjeljakDruga, ponedjeljakTreca,
-utorakPrva, utorakDruga, utorakTreca,
-srijedaPrva, srijedaDruga, srijedaTreca,
-cetvrtakPrva, cetvrtakDruga, cetvrtakTreca,
-petakPrva, petakDruga, petakTreca,
-subotaPrva, subotaDruga, subotaTreca,
-nedjeljaPrva, nedjeljaDruga, nedjeljaTreca
- );
+  ponedjeljakPrva, ponedjeljakDruga, ponedjeljakTreca,
+  utorakPrva, utorakDruga, utorakTreca,
+  srijedaPrva, srijedaDruga, srijedaTreca,
+  cetvrtakPrva, cetvrtakDruga, cetvrtakTreca,
+  petakPrva, petakDruga, petakTreca,
+  subotaPrva, subotaDruga, subotaTreca,
+  nedjeljaPrva, nedjeljaDruga, nedjeljaTreca
+);
 
 function djelatnikLoginCheck(req, res, next) {
   if (req.isAuthenticated() && req.user.role === "user") {
@@ -1585,26 +1617,37 @@ app.post("/diselProdaja", function(req, res) {
 app.post("/plinProdaja", function(req, res) {
   const prodano = req.body.Prodano_Plin;
 
-  Agregati.findOne({
-    ime: "plin"
-  }, function(err, pronadenProizvod) {
-    const x = pronadenProizvod.stanje;
-    if (x >= prodano) {
-      Agregati.updateMany({
+  Zauzece.findOne({agregat: "Plin"}, function(err, foundAgregat){
+    if(foundAgregat.value === "orange"){
+      Agregati.findOne({
         ime: "plin"
-      }, {
-        stanje: x - prodano
-      }, function(err) {
-        if (!err) {
-          res.redirect("/djelatnik/prodaja");
+      }, function(err, pronadenProizvod) {
+        const x = pronadenProizvod.stanje;
+        if (x >= prodano) {
+          Agregati.updateMany({
+            ime: "plin"
+          }, {
+            stanje: x - prodano
+          }, function(err) {
+            if (!err) {
+              Zauzece.updateMany({agregat: "Plin"}, {value: "green"}, function(){
+                res.redirect("/djelatnik/prodaja");
+              });
+            } else {
+              res.redirect("/");
+            }
+          });
         } else {
-          res.redirect("/");
+          res.send("Nedovoljna kolicina na stanju.")
         }
+
       });
-    } else {
-      res.send("Nedovoljna kolicina na stanju.")
+    }else {
+      res.send("Nije za prodaju.");
     }
-  });
+  })
+
+
 });
 
 app.post("/unpProdaja", function(req, res) {
@@ -1632,27 +1675,105 @@ app.post("/unpProdaja", function(req, res) {
   });
 });
 
-///////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////AGREGATI USER//////////////////////////////////////////
 
 
 app.get("/djelatnik/agregati", function(req, res) {
   if (req.isAuthenticated() && req.user.role === "user") {
-
+  Zauzece.findOne({
+    agregat: "Plin"
+  }, function(err, foundAgregat) {
     Agregati.find(function(err, foundUsers) {
       if (err) {
         console.log(err);
       } else {
         if (foundUsers) {
           res.render("agregatiUser", {
-            users: foundUsers
+            users: foundUsers,
+            agregat: foundAgregat
           });
         }
       }
     });
+
+  });
+
   } else {
     res.redirect("/");
   }
 });
+
+///////*********** PROVJERE PLINA BOJE *********///////////
+/// LOGIKA ZA ZELENU///
+app.post("/provjeraZaPlinZelena", function(req, res) {
+  Zauzece.findOne({agregat: "Plin"},function(err, foundAgregat){
+    if(foundAgregat.value === "orange"){
+      res.send("Prodaj prvo");
+    }else if(foundAgregat.value === "red"){
+      Zauzece.updateMany({
+        agregat: "Plin"
+      }, {
+        value: "red"
+      }, function() {
+        res.redirect("/djelatnik/agregati");
+      })
+    }else if (foundAgregat.value === "green"){
+      Zauzece.updateMany({
+        agregat: "Plin"
+      }, {
+        value: "green"
+      }, function() {
+        res.redirect("/djelatnik/agregati");
+      })
+    }
+  })
+})
+
+/// LOGIKA ZA NARANDZASTU///
+app.post("/provjeraZaPlinNarandzasta", function(req, res) {
+  Zauzece.findOne({agregat: "Plin"},function(err, foundAgregat){
+    if(foundAgregat.value === "orange"){
+      Zauzece.updateMany({
+        agregat: "Plin"
+      }, {
+        value: "orange"
+      }, function() {
+        res.redirect("/djelatnik/agregati");
+      })
+    }else if(foundAgregat.value === "red"){
+      Zauzece.updateMany({
+        agregat: "Plin"
+      }, {
+        value: "red"
+      }, function() {
+        res.redirect("/djelatnik/agregati");
+      })
+    }else if (foundAgregat.value === "green"){
+      Zauzece.updateMany({
+        agregat: "Plin"
+      }, {
+        value: "orange"
+      }, function() {
+        res.redirect("/djelatnik/agregati");
+      })
+    }
+  })
+})
+
+/// LOGIKA ZA CRVENU///
+app.post("/provjeraZaPlinCrvena", function(req, res) {
+  Zauzece.updateMany({
+    agregat: "Plin"
+  }, {
+    value: "red"
+  }, function() {
+    res.redirect("/djelatnik/agregati");
+  })
+})
+
+
+
+
 
 ////////////////************PROFIL OD USERA*****************////////////////
 ////////////////*********** PROVJERA RADNIH SATI************////////////////
