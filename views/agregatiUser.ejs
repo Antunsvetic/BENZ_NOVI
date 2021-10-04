@@ -72,29 +72,50 @@
       text-align: center;
     }
 
-    .PlinButtons{
+    .PlinButtons {
       width: 100%;
     }
 
-    .PlinButtons form{
+    .PlinButtons form {
       display: inline;
     }
 
     .PlinButtons button {
+      width: 2rem;
       height: 2rem;
+      border-radius: 50%;
+    }
+    .zelena{
+      background-color: green;
     }
 
-    .red{
-      color: red;
-    }
-    .green{
-      color: green;
+    .crvena{
+      background-color: red;
     }
 
-    .orange{
-      color:orange;
+    .narandzasta{
+      background-color: orange;
     }
 
+    .red {
+      background-color: red;
+    }
+
+    .green {
+      background-color: green;
+    }
+
+    .orange {
+      background-color: orange;
+    }
+
+    .zauzeceVrijednost{
+      width: 20px;
+      height: 20px;
+      margin-left: 10px;
+      border: 3px solid white;
+      border-radius: 50%;
+    }
   </style>
 </head>
 
@@ -104,20 +125,56 @@
   <div class="DERIVATI">
 
     <div class="Benzin">
-      <h3 class="Naslov">BENZIN</h3>
+      <h3 class="Naslov">Eurosuper 95</h3>
       <img class="slika" src="http://localhost:3000/Benzin.jpg" alt="Benzin">
       <h4 class="IspisStanja"> Stanje: <%= users[0].stanje %> litara </h4>
       <h4 class="CijenaDerivata"> Cijena: <%= users[0].cijena %> kn/l</h4>
+      <div class="zauzeceVrijednost <%= benzin.value %>"></div>
+      <br>
+      <div class="PlinButtons">
+        <form action="/provjeraZaBenzinZelena" method="post">
+          <button class="zelena" type="submit" name="button"></button>
+        </form>
+        <form action="/provjeraZaBenzinNarandzasta" method="post">
+          <button class="narandzasta" type="submit" name="button"></button>
+        </form>
+        <form action="/provjeraZaBenzinCrvena" method="post">
+          <button class="crvena" type="submit" name="button"></button>
+        </form>
+      </div>
+    </div>
 
-
+    <div class="Benzin">
+      <h3 class="Naslov">Eurosuper 95 Class Plus</h3>
+      <img class="slika" src="http://localhost:3000/Benzin.jpg" alt="Benzin">
+      <h4 class="IspisStanja"> Stanje: <%= users[4].stanje %> litara </h4>
+      <h4 class="CijenaDerivata"> Cijena: <%= users[4].cijena %> kn/l</h4>
+      <p class="<%= benzin2.value %>"><%= benzin2.value %></p>
+      <div class="PlinButtons">
+        <form action="/provjeraZaBenzin2Zelena" method="post">
+          <button type="submit" name="button">Zelena</button>
+        </form>
+        <form action="/provjeraZaBenzin2Narandzasta" method="post">
+          <button type="submit" name="button">Narandzasta</button>
+        </form>
+        <form action="/provjeraZaBenzin2Crvena" method="post">
+          <button type="submit" name="button">Crvena</button>
+        </form>
+      </div>
     </div>
 
     <div class="Disel">
-      <h3 class="Naslov">DISEL</h3>
+      <h3 class="Naslov">Eurodisel</h3>
       <img class="slika" src="http://localhost:3000/Disel.jpg" alt="Benzin">
       <h4 class="IspisStanja"> Stanje: <%= users[1].stanje %> litara </h4>
-      <h4 class="CijenaDerivata"> Cijena: <%= users[1].stanje %> kn/l</h4>
+      <h4 class="CijenaDerivata"> Cijena: <%= users[1].cijena %> kn/l</h4>
+    </div>
 
+    <div class="Disel">
+      <h3 class="Naslov">Disel Imperium</h3>
+      <img class="slika" src="http://localhost:3000/Disel.jpg" alt="Benzin">
+      <h4 class="IspisStanja"> Stanje: <%= users[5].stanje %> litara </h4>
+      <h4 class="CijenaDerivata"> Cijena: <%= users[5].cijena %> kn/l</h4>
     </div>
 
     <div class="Plin">
@@ -125,18 +182,18 @@
       <img class="slika" src="http://localhost:3000/Plin.jpg" alt="Benzin">
       <h4 class="IspisStanja"> Stanje: <%= users[2].stanje %> litara </h4>
       <h4 class="CijenaDerivata"> Cijena: <%= users[2].cijena %> kn/l</h4>
-      <p class="<%= agregat.value %>"><%= agregat.value %></p>
-        <div class="PlinButtons">
-          <form action="/provjeraZaPlinZelena" method="post">
-            <button type="submit" name="button">Zelena</button>
-          </form>
-          <form action="/provjeraZaPlinNarandzasta" method="post">
-            <button type="submit" name="button">Narandzasta</button>
-          </form>
-          <form action="/provjeraZaPlinCrvena" method="post">
-            <button type="submit" name="button">Crvena</button>
-          </form>
-        </div>
+      <p class="<%= plin.value %>"><%= plin.value %></p>
+      <div class="PlinButtons">
+        <form action="/provjeraZaPlinZelena" method="post">
+          <button type="submit" name="button">Zelena</button>
+        </form>
+        <form action="/provjeraZaPlinNarandzasta" method="post">
+          <button type="submit" name="button">Narandzasta</button>
+        </form>
+        <form action="/provjeraZaPlinCrvena" method="post">
+          <button type="submit" name="button">Crvena</button>
+        </form>
+      </div>
 
     </div>
 

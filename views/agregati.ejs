@@ -23,7 +23,11 @@
   .DerCijena{
     background-color: black;
   }
-
+ .DERIVATI_DVA{
+   margin-left: 20px;
+   color:white;
+   display: flex;
+ }
   .DERIVATI{
     margin-left: 20px;
     color:white;
@@ -36,7 +40,7 @@
   }
 
   .Disel{
-    background-color: #2C394B;
+    background-color: #A09F57;
     margin-left: 70px;
   }
   .Plin{
@@ -77,7 +81,7 @@ animationEnabled: true,
 exportEnabled: true,
 theme: "light1", // "light1", "light2", "dark1", "dark2"
 title:{
-text: "Zauzeće agregata"
+text: "Zauzeæe agregata"
 },
   axisY: {
       includeZero: true
@@ -89,10 +93,12 @@ indexLabelFontColor: "#5A5757",
       indexLabelFontSize: 16,
 indexLabelPlacement: "outside",
 dataPoints: [
-{ x: 20, y: <%= userWithStanjeAndCijena[0].stanje / 10000 * 100 %>, indexLabel: "\u2691 Benzin" },
-{ x: 40, y: <%= userWithStanjeAndCijena[1].stanje / 10000 * 100 %>, indexLabel: "\u2691Disel" },
-{ x: 60, y: <%= userWithStanjeAndCijena[2].stanje / 10000 * 100 %>, indexLabel: "\u2691 Plin" },
-{ x: 80, y: <%= userWithStanjeAndCijena[3].stanje / 500 * 100 %>, indexLabel: "\u2691 UNP" }
+{ x: 20, y: <%= userWithStanjeAndCijena[0].stanje / 10000 * 100 %>, indexLabel: "\u2691 EuroSuper95" },
+{ x: 40, y: <%= userWithStanjeAndCijena[4].stanje / 10000 * 100 %>, indexLabel: "\u2691 EuroSuper95 ClassPlus" },
+{ x: 60, y: <%= userWithStanjeAndCijena[1].stanje / 10000 * 100 %>, indexLabel: "\u2691 Eurodisel" },
+{ x: 80, y: <%= userWithStanjeAndCijena[5].stanje / 10000 * 100 %>, indexLabel: "\u2691 Disel Imperium" },
+{ x: 100, y: <%= userWithStanjeAndCijena[2].stanje / 10000 * 100 %>, indexLabel: "\u2691 Plin" },
+{ x: 120, y: <%= userWithStanjeAndCijena[3].stanje / 500 * 100 %>, indexLabel: "\u2691 UNP" },
 ]
 }]
 });
@@ -106,31 +112,54 @@ chart.render();
 <body>
 
   <h1>AGREGATI</h1>
-
+  <a role="button" class="nazad" href="/admin">Nazad</a>
   <div class="DERIVATI">
 
 <form action="/benzin" method="post">
   <div class="Benzin">
-    <h3 class="Naslov">Benzin</h3>
+    <h3 class="Naslov">EuroSuper95</h3>
     <img class="slika" src="Benzin.jpg" alt="Benzin">
     <h4 class="IspisStanja"> Stanje: <%= userWithStanjeAndCijena[0].stanje %> litara </h4>
     <h4 class="CijenaDerivata"> Cijena: <%= userWithStanjeAndCijena[0].cijena %> kn/l</h4>
-    <h4 class="UnosKolicine">Unesite dodanu kolicinu:</h4>
+    <h4 class="UnosKolicine">Unesite kolicinu:</h4>
     <input class="UnosKol" type="text" name="stanje" value="">
     <h4 class="DerCijena">Promijeni cijenu derivata:</h4>
     <input class="UnosKol" type="text" name="cijena" value="">
     <button type="submit" name="button">Potvrdi</button>
+  </div>
+</form>
+</form>
+<!-- OVO SU TIPKE ZELENA I CRVENA ZA PLIN -->
+<div class="zauzece">
+  <form action="/adminBenzinZelena" method="post">
+    <button type="submit" name="button">Zelena</button>
+  </form>
+  <form action="/adminBenzinCrvena" method="post">
+    <button type="submit" name="button">Crvena</button>
+  </form>
+</div>
 
+<form action="/dizel" method="post">
+  <div class="Benzin">
+    <h3 class="Naslov">EuroSuper95 class plus</h3>
+    <img class="slika" src="Benzin.jpg" alt="Benzin">
+    <h4 class="IspisStanja"> Stanje: <%= userWithStanjeAndCijena[4].stanje %> litara </h4>
+    <h4 class="CijenaDerivata"> Cijena: <%= userWithStanjeAndCijena[4].cijena %> kn/l</h4>
+    <h4 class="UnosKolicine">Unesite kolicinu:</h4>
+    <input class="UnosKol" type="text" name="stanje" value="">
+    <h4 class="DerCijena">Promijeni cijenu derivata:</h4>
+    <input class="UnosKol" type="text" name="cijena" value="">
+    <button type="submit" name="button">Potvrdi</button>
   </div>
 </form>
 
 <form action="/dizel" method="post">
   <div class="Disel">
-    <h3 class="Naslov">Disel</h3>
+    <h3 class="Naslov">Eurodisel</h3>
     <img class="slika" src="Disel.jpg" alt="Benzin">
     <h4 class="IspisStanja"> Stanje: <%= userWithStanjeAndCijena[1].stanje %> litara </h4>
     <h4 class="CijenaDerivata"> Cijena: <%= userWithStanjeAndCijena[1].cijena %> kn/l</h4>
-    <h4 class="UnosKolicine">Unesite dodanu kolicinu:</h4>
+    <h4 class="UnosKolicine">Unesite kolicinu:</h4>
     <input class="UnosKol" type="text" name="stanje" value="">
     <h4 class="DerCijena">Promijeni cijenu derivata:</h4>
     <input class="UnosKol" type="text" name="cijena" value="">
@@ -138,44 +167,68 @@ chart.render();
   </div>
 </form>
 
-<form class="" action="/plin" method="post">
-  <div class="Plin">
-    <h3 class="Naslov">Plin</h3>
-    <img class="slika" src="Plin.jpg" alt="Benzin">
-    <h4 class="IspisStanja"> Stanje: <%= userWithStanjeAndCijena[2].stanje %> litara </h4>
-    <h4 class="CijenaDerivata"> Cijena: <%= userWithStanjeAndCijena[2].cijena %> kn/l</h4>
-    <h4 class="UnosKolicine">Unesite dodanu kolicinu:</h4>
+<form action="/dizel" method="post">
+  <div class="Disel">
+    <h3 class="Naslov">Disel Imperium</h3>
+    <img class="slika" src="Disel.jpg" alt="Benzin">
+    <h4 class="IspisStanja"> Stanje: <%= userWithStanjeAndCijena[5].stanje %> litara </h4>
+    <h4 class="CijenaDerivata"> Cijena: <%= userWithStanjeAndCijena[5].cijena %> kn/l</h4>
+    <h4 class="UnosKolicine">Unesite kolicinu:</h4>
     <input class="UnosKol" type="text" name="stanje" value="">
     <h4 class="DerCijena">Promijeni cijenu derivata:</h4>
     <input class="UnosKol" type="text" name="cijena" value="">
     <button type="submit" name="button">Potvrdi</button>
-
-
   </div>
 </form>
-<!-- OVO SU TIPKE ZELENA I CRVENA ZA PLIN -->
-<div class="zauzece">
-  <form action="/adminPlinZelena" method="post">
-    <button type="submit" name="button">Zelena</button>
+
+
+  <form class="" action="/plin" method="post">
+    <div class="Plin">
+      <h3 class="Naslov">Plin</h3>
+      <img class="slika" src="Plin.jpg" alt="Benzin">
+      <h4 class="IspisStanja"> Stanje: <%= userWithStanjeAndCijena[2].stanje %> litara </h4>
+      <h4 class="CijenaDerivata"> Cijena: <%= userWithStanjeAndCijena[2].cijena %> kn/l</h4>
+      <h4 class="UnosKolicine">Unesite kolicinu:</h4>
+      <input class="UnosKol" type="text" name="stanje" value="">
+      <h4 class="DerCijena">Promijeni cijenu derivata:</h4>
+      <input class="UnosKol" type="text" name="cijena" value="">
+      <button type="submit" name="button">Potvrdi</button>
+
+
+    </div>
   </form>
-  <form action="/adminPlinCrvena" method="post">
-    <button type="submit" name="button">Crvena</button>
-  </form>
-</div>
-
-<form action="/unp" method="post">
-  <div class="UNP">
-    <h3 class="Naslov">UNP</h3>
-    <img class="slika" src="UNP.jpg" alt="Benzin">
-    <h4 class="IspisStanja"> Stanje: <%= userWithStanjeAndCijena[3].stanje %> boca </h4>
-    <h4 class="CijenaDerivata"> Cijena: <%=userWithStanjeAndCijena[3].cijena %> kn/boca</h4>
-    <h4 class="UnosKolicine">Unesite dodanu kolicinu:</h4>
-    <input class="UnosKol" type="text" name="stanje" value="">
-    <h4 class="DerCijena">Promijeni cijenu derivata:</h4>
-    <input class="UnosKol" type="text" name="cijena" value="">
-    <button type="submit" name="button">Potvrdi</button>
+  <!-- OVO SU TIPKE ZELENA I CRVENA ZA PLIN -->
+  <div class="zauzece">
+    <form action="/adminPlinZelena" method="post">
+      <button type="submit" name="button">Zelena</button>
+    </form>
+    <form action="/adminPlinCrvena" method="post">
+      <button type="submit" name="button">Crvena</button>
+    </form>
   </div>
-</form>
+
+  <form action="/unp" method="post">
+    <div class="UNP">
+      <h3 class="Naslov">UNP</h3>
+      <img class="slika" src="UNP.jpg" alt="Benzin">
+      <h4 class="IspisStanja"> Stanje: <%= userWithStanjeAndCijena[3].stanje %> boca </h4>
+      <h4 class="CijenaDerivata"> Cijena: <%=userWithStanjeAndCijena[3].cijena %> kn/boca</h4>
+      <h4 class="UnosKolicine">Unesite kolicinu:</h4>
+      <input class="UnosKol" type="text" name="stanje" value="">
+      <h4 class="DerCijena">Promijeni cijenu derivata:</h4>
+      <input class="UnosKol" type="text" name="cijena" value="">
+      <button type="submit" name="button">Potvrdi</button>
+    </div>
+  </form>
+  <form action="/unp" method="post">
+    <div class="UNP" style="height:400px">
+      <h3 class="Naslov">Stanica za pumpanje guma</h3>
+      <img class="slika" src="UNP.jpg" alt="Benzin">
+
+    </div>
+  </form>
+
+
 
   </div>
 
