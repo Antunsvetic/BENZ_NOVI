@@ -81,9 +81,11 @@
     }
 
     .PlinButtons button {
-      width: 2rem;
-      height: 2rem;
+      width: 1.3rem;
+      height: 1.3rem;
       border-radius: 50%;
+      border: 2px solid black;
+      margin-left: 1rem;
     }
     .zelena{
       background-color: green;
@@ -149,16 +151,17 @@
       <img class="slika" src="http://localhost:3000/Benzin.jpg" alt="Benzin">
       <h4 class="IspisStanja"> Stanje: <%= users[4].stanje %> litara </h4>
       <h4 class="CijenaDerivata"> Cijena: <%= users[4].cijena %> kn/l</h4>
-      <p class="<%= benzin2.value %>"><%= benzin2.value %></p>
+      <div class="zauzeceVrijednost <%= benzin2.value %>"></div>
+      <br>
       <div class="PlinButtons">
         <form action="/provjeraZaBenzin2Zelena" method="post">
-          <button type="submit" name="button">Zelena</button>
+          <button class="zelena" type="submit" name="button"></button>
         </form>
         <form action="/provjeraZaBenzin2Narandzasta" method="post">
-          <button type="submit" name="button">Narandzasta</button>
+          <button class="narandzasta" type="submit" name="button"></button>
         </form>
         <form action="/provjeraZaBenzin2Crvena" method="post">
-          <button type="submit" name="button">Crvena</button>
+          <button class="crvena" type="submit" name="button"></button>
         </form>
       </div>
     </div>
@@ -168,6 +171,19 @@
       <img class="slika" src="http://localhost:3000/Disel.jpg" alt="Benzin">
       <h4 class="IspisStanja"> Stanje: <%= users[1].stanje %> litara </h4>
       <h4 class="CijenaDerivata"> Cijena: <%= users[1].cijena %> kn/l</h4>
+      <div class="zauzeceVrijednost <%= disel.value %>"></div>
+      <br>
+      <div class="PlinButtons">
+        <form action="/provjeraZaDiselZelena" method="post">
+          <button class="zelena" type="submit" name="button"></button>
+        </form>
+        <form action="/provjeraZaDiselNarandzasta" method="post">
+          <button class="narandzasta" type="submit" name="button"></button>
+        </form>
+        <form action="/provjeraZaDiselCrvena" method="post">
+          <button class="crvena" type="submit" name="button"></button>
+        </form>
+      </div>
     </div>
 
     <div class="Disel">
@@ -175,6 +191,19 @@
       <img class="slika" src="http://localhost:3000/Disel.jpg" alt="Benzin">
       <h4 class="IspisStanja"> Stanje: <%= users[5].stanje %> litara </h4>
       <h4 class="CijenaDerivata"> Cijena: <%= users[5].cijena %> kn/l</h4>
+      <div class="zauzeceVrijednost <%= disel2.value %>"></div>
+      <br>
+      <div class="PlinButtons">
+        <form action="/provjeraZaDisel2Zelena" method="post">
+          <button class="zelena" type="submit" name="button"></button>
+        </form>
+        <form action="/provjeraZaDisel2Narandzasta" method="post">
+          <button class="narandzasta" type="submit" name="button"></button>
+        </form>
+        <form action="/provjeraZaDisel2Crvena" method="post">
+          <button class="crvena" type="submit" name="button"></button>
+        </form>
+      </div>
     </div>
 
     <div class="Plin">
@@ -182,16 +211,17 @@
       <img class="slika" src="http://localhost:3000/Plin.jpg" alt="Benzin">
       <h4 class="IspisStanja"> Stanje: <%= users[2].stanje %> litara </h4>
       <h4 class="CijenaDerivata"> Cijena: <%= users[2].cijena %> kn/l</h4>
-      <p class="<%= plin.value %>"><%= plin.value %></p>
+      <div class="zauzeceVrijednost <%= plin.value %>"></div>
+      <br>
       <div class="PlinButtons">
         <form action="/provjeraZaPlinZelena" method="post">
-          <button type="submit" name="button">Zelena</button>
+          <button class="zelena" type="submit" name="button"></button>
         </form>
         <form action="/provjeraZaPlinNarandzasta" method="post">
-          <button type="submit" name="button">Narandzasta</button>
+          <button class="narandzasta" type="submit" name="button"></button>
         </form>
         <form action="/provjeraZaPlinCrvena" method="post">
-          <button type="submit" name="button">Crvena</button>
+          <button class="crvena" type="submit" name="button"></button>
         </form>
       </div>
 

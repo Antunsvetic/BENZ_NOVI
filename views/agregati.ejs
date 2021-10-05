@@ -70,6 +70,25 @@
     display: inline;
   }
 
+  .red {
+    background-color: red;
+  }
+
+  .green {
+    background-color: green;
+  }
+
+  .orange {
+    background-color: orange;
+  }
+
+  .zauzeceVrijednost{
+    width: 20px;
+    height: 20px;
+    margin-left: 10px;
+    border: 3px solid white;
+    border-radius: 50%;
+  }
 
   </style>
 
@@ -126,10 +145,12 @@ chart.render();
     <h4 class="DerCijena">Promijeni cijenu derivata:</h4>
     <input class="UnosKol" type="text" name="cijena" value="">
     <button type="submit" name="button">Potvrdi</button>
+    <br>
+    <div class="zauzeceVrijednost <%= benzin.value %>"></div>
   </div>
 </form>
-</form>
-<!-- OVO SU TIPKE ZELENA I CRVENA ZA PLIN -->
+
+<!-- OVO SU TIPKE ZELENA I CRVENA ZA EUROSUPER95 -->
 <div class="zauzece">
   <form action="/adminBenzinZelena" method="post">
     <button type="submit" name="button">Zelena</button>
@@ -139,7 +160,7 @@ chart.render();
   </form>
 </div>
 
-<form action="/dizel" method="post">
+<form action="/benzin2" method="post">
   <div class="Benzin">
     <h3 class="Naslov">EuroSuper95 class plus</h3>
     <img class="slika" src="Benzin.jpg" alt="Benzin">
@@ -150,8 +171,19 @@ chart.render();
     <h4 class="DerCijena">Promijeni cijenu derivata:</h4>
     <input class="UnosKol" type="text" name="cijena" value="">
     <button type="submit" name="button">Potvrdi</button>
+    <br>
+    <div class="zauzeceVrijednost <%= benzin2.value %>"></div>
   </div>
 </form>
+<!-- OVO SU TIPKE ZELENA I CRVENA ZA EUROSUPER95 CLASS PLUS -->
+<div class="zauzece">
+  <form action="/adminBenzin2Zelena" method="post">
+    <button type="submit" name="button">Zelena</button>
+  </form>
+  <form action="/adminBenzin2Crvena" method="post">
+    <button type="submit" name="button">Crvena</button>
+  </form>
+</div>
 
 <form action="/dizel" method="post">
   <div class="Disel">
@@ -164,10 +196,21 @@ chart.render();
     <h4 class="DerCijena">Promijeni cijenu derivata:</h4>
     <input class="UnosKol" type="text" name="cijena" value="">
     <button type="submit" name="button">Potvrdi</button>
+    <br>
+    <div class="zauzeceVrijednost <%= disel.value %>"></div>
   </div>
 </form>
+<!-- OVO SU TIPKE ZELENA I CRVENA ZA EURODISEL -->
+<div class="zauzece">
+  <form action="/adminDiselZelena" method="post">
+    <button type="submit" name="button">Zelena</button>
+  </form>
+  <form action="/adminDiselCrvena" method="post">
+    <button type="submit" name="button">Crvena</button>
+  </form>
+</div>
 
-<form action="/dizel" method="post">
+<form action="/dizel2" method="post">
   <div class="Disel">
     <h3 class="Naslov">Disel Imperium</h3>
     <img class="slika" src="Disel.jpg" alt="Benzin">
@@ -178,8 +221,19 @@ chart.render();
     <h4 class="DerCijena">Promijeni cijenu derivata:</h4>
     <input class="UnosKol" type="text" name="cijena" value="">
     <button type="submit" name="button">Potvrdi</button>
+    <br>
+    <div class="zauzeceVrijednost <%= disel2.value %>"></div>
   </div>
 </form>
+<!-- OVO SU TIPKE ZELENA I CRVENA ZA DISEL IMPERIUM-->
+<div class="zauzece">
+  <form action="/adminDisel2Zelena" method="post">
+    <button type="submit" name="button">Zelena</button>
+  </form>
+  <form action="/adminDisel2Crvena" method="post">
+    <button type="submit" name="button">Crvena</button>
+  </form>
+</div>
 
 
   <form class="" action="/plin" method="post">
@@ -193,7 +247,8 @@ chart.render();
       <h4 class="DerCijena">Promijeni cijenu derivata:</h4>
       <input class="UnosKol" type="text" name="cijena" value="">
       <button type="submit" name="button">Potvrdi</button>
-
+      <br>
+      <div class="zauzeceVrijednost <%= plin.value %>"></div>
 
     </div>
   </form>
@@ -220,13 +275,23 @@ chart.render();
       <button type="submit" name="button">Potvrdi</button>
     </div>
   </form>
-  <form action="/unp" method="post">
+
     <div class="UNP" style="height:400px">
       <h3 class="Naslov">Stanica za pumpanje guma</h3>
       <img class="slika" src="UNP.jpg" alt="Benzin">
-
+      <br>
+      <div class="zauzeceVrijednost <%= pumpa.value %>"></div>
     </div>
-  </form>
+    <!-- OVO SU TIPKE ZELENA I CRVENA ZA PUMPU -->
+    <div class="zauzece">
+      <form action="/adminPumpaZelena" method="post">
+        <button type="submit" name="button">Zelena</button>
+      </form>
+      <form action="/adminPumpaCrvena" method="post">
+        <button type="submit" name="button">Crvena</button>
+      </form>
+    </div>
+
 
 
 
