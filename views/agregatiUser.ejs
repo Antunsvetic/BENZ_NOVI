@@ -118,11 +118,16 @@
       border: 3px solid white;
       border-radius: 50%;
     }
+
+
   </style>
 </head>
 
 <body>
   <h1>AGREGATI</h1>
+  <br>
+  <a style="text-decoration: none; font-size: 15px; color: black;" role="button" class="nazad" href="/djelatnik">Nazad</a>
+
 
   <div class="DERIVATI">
 
@@ -234,6 +239,14 @@
       <h4 class="CijenaDerivata"> Cijena: <%= users[3].cijena %> kn/boca</h4>
 
     </div>
+
+    <div class="UNP" style="height:400px">
+      <h3 class="Naslov">Stanica za pumpanje guma</h3>
+      <img class="slika" src="http://localhost:3000/UNP.jpg" alt="Benzin">
+      <br>
+      <div class="zauzeceVrijednost <%= pumpa.value %>"></div>
+    </div>
+
   </div>
 </body>
 

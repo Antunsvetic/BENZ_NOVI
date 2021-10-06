@@ -6,30 +6,7 @@
   <title>Admin</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-  <script type="text/javascript">
 
-      let stanjeBenzina = <%=stanjeBenzina%>;
-      if (stanjeBenzina < 250){
-      alert(" OBAVIJEST! Benzina ima manje od 250L !!!");
-    }
-
-    let stanjeDizela = <%=stanjeDizela%>;
-    if (stanjeDizela < 250){
-    alert(" OBAVIJEST! Disela ima manje od 250L !!!");
-  }
-
-  let stanjePlina = <%=stanjePlina%>;
-  if (stanjePlina < 250){
-  alert(" OBAVIJEST! Plina ima manje od 250L !!!");
-}
-
-let stanjeUNP = <%=stanjeUNP%>;
-if (stanjeUNP < 250){
-alert(" OBAVIJEST! UNP-a ima manje od 250L !!!");
-}
-
-
-  </script>
   <style media="screen">
   body{
    background-color: #476072;
@@ -147,6 +124,30 @@ alert(" OBAVIJEST! UNP-a ima manje od 250L !!!");
     <a role="button" class="Agregati" href="/agregati">Agregati</a>
     <a role="button" class="Statistika" href="/statistika">Djelatnici</a>
     </div>
+
+  <% if( stanjeBenzina < 250 ){ %>
+    <p>Stanje EuroSuper95 je manje od 250</p>
+  <% } %>
+
+  <% if( stanjeBenzina2 < 250 ){ %>
+    <p>Stanje EuroSuper95 Class Plus je manje od 250</p>
+  <% } %>
+
+  <% if( stanjeDizela < 250 ){ %>
+    <p>Stanje Eurodisela je manje od 250</p>
+  <% } %>
+
+  <% if( stanjeDizela2 < 250 ){ %>
+    <p>Stanje Disel Imperium je manje od 250</p>
+  <% } %>
+
+  <% if( stanjePlina < 250 ){ %>
+    <p>Stanje Plina je manje od 250</p>
+  <% } %>
+
+  <% if( stanjeUNP < 250 ){ %>
+    <p>Stanje UNP je manje od 250</p>
+  <% } %>
 
     <form action="/logout" method="post">
       <button type="submit" class="btn btn-outline-dark btn-md logoutBtn" name="button">Logout</button>

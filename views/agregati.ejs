@@ -90,6 +90,20 @@
     border-radius: 50%;
   }
 
+  .container{
+    background: grey;
+    color:white;
+    margin-left: 1rem;
+    margin-top: 1rem;
+    display: flex;
+  }
+
+  .inner{
+    margin-left: 1rem;
+    padding: 0 0.5rem;
+    background: black;
+  }
+
   </style>
 
   <script>
@@ -294,6 +308,52 @@ chart.render();
 
 
 
+
+  </div>
+
+  <div class="container">
+
+    <div class="inner">
+      <h4>EuroSuper95: </h4>
+      <p>Prodaja: <%=benzinBroj%> </p>
+      <p>Kolicina prodanog: <%= benzinKolicina %> L</p>
+      <p>Prosjek po prodaji: <%= benzinKolicina / benzinBroj %> L/prodaji</p>
+    </div>
+
+    <div class="inner">
+      <h4>EuroSuper95 Class Plus: </h4>
+      <p>Prodaja: <%=benzin2Broj%> </p>
+      <p>Kolicina prodanog: <%= benzin2Kolicina %> L</p>
+      <p>Prosjek po prodaji: <%= benzin2Kolicina / benzin2Broj %> L/prodaji</p>
+    </div>
+
+    <div class="inner">
+      <h4>EuroDisel: </h4>
+      <p>Prodaja: <%=diselBroj%> </p>
+      <p>Kolicina prodanog: <%= diselKolicina %> L</p>
+      <p>Prosjek po prodaji: <%= diselKolicina / diselBroj %> L/prodaji</p>
+    </div>
+
+    <div class="inner">
+      <h4>EuroDisel Imperium: </h4>
+      <p>Prodaja: <%=disel2Broj%> </p>
+      <p>Kolicina prodanog: <%= disel2Kolicina %> L</p>
+      <p>Prosjek po prodaji: <%= disel2Kolicina / disel2Broj %> L/prodaji</p>
+    </div>
+
+    <div class="inner">
+      <h4>Plin: </h4>
+      <p>Prodaja: <%=plinBroj%> </p>
+      <p>Kolicina prodanog: <%= plinKolicina %> L</p>
+      <p>Prosjek po prodaji: <%= plinKolicina / plinBroj %> L/prodaji</p>
+    </div>
+
+    <div class="inner">
+      <h4>UNP: </h4>
+      <p>Prodaja: <%=unpBroj%> </p>
+      <p>Kolicina prodanog: <%= unpKolicina %> L</p>
+      <p>Prosjek po prodaji: <%= unpKolicina / unpBroj %> L/prodaji</p>
+    </div>
 
   </div>
 

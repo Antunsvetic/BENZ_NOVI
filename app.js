@@ -162,7 +162,7 @@ const statistikaSchema = {
 const Statistika = mongoose.model("Statistika", statistikaSchema);
 
 const stat = new Statistika({
-  agregat: "Benzin",
+  agregat: "UNP",
   broj: 0,
   kolicina: 0
 });
@@ -186,7 +186,7 @@ app.get("/", function(req, res) {
   res.render("home");
 })
 
-app.get("/admin", provjeraAdmina, benzinCheck, dizelCheck, plinCheck, unpCheck, renderAdminPage);
+app.get("/admin", provjeraAdmina, benzinCheck, benzin2Check, dizelCheck, dizel2Check, plinCheck, unpCheck, renderAdminPage);
 
 function provjeraAdmina(req, res, next) {
   if (req.isAuthenticated() && req.user.role === "admin") {
@@ -208,6 +208,17 @@ function benzinCheck(req, res, next) {
   });
 };
 
+function benzin2Check(req, res, next) {
+  Agregati.find({
+    "ime": {
+      $ne: null
+    }
+  }, function(err, pronadenoStanje) {
+    res.locals.stanjeBenzina2 = pronadenoStanje[4].stanje;
+    next();
+  });
+};
+
 function dizelCheck(req, res, next) {
   Agregati.find({
     "ime": {
@@ -215,6 +226,17 @@ function dizelCheck(req, res, next) {
     }
   }, function(err, pronadenoStanje) {
     res.locals.stanjeDizela = pronadenoStanje[1].stanje;
+    next();
+  });
+};
+
+function dizel2Check(req, res, next) {
+  Agregati.find({
+    "ime": {
+      $ne: null
+    }
+  }, function(err, pronadenoStanje) {
+    res.locals.stanjeDizela2 = pronadenoStanje[5].stanje;
     next();
   });
 };
@@ -670,7 +692,7 @@ function redirectForm(req, res) {
 /////////////////////////////////////////////////////////////////
 //////////////////********* AGREGATI ADMIN ****///////////////////
 
-app.get("/agregati",  provjeraAgregataUsera,zauzeceBenzin, zauzeceBenzin2, zauzeceDisel, zauzeceDisel2, zauzecePlin, zauzecePumpa, renderAgregatiAdmin)
+app.get("/agregati",provjeraAdminaAgregati,statistikaBenzin, statistikaBenzin2, statistikaDisel, statistikaDisel2, statistikaPlin, statistikaUNP, provjeraAgregataUsera,zauzeceBenzin, zauzeceBenzin2, zauzeceDisel, zauzeceDisel2, zauzecePlin, zauzecePumpa, renderAgregatiAdmin)
 
 function provjeraAdminaAgregati(req, res, next){
   if (req.isAuthenticated() && req.user.role === "admin") {
@@ -691,6 +713,78 @@ function provjeraAgregataUsera(req, res, next){
         }
       }
     });
+  }
+
+  function statistikaBenzin (req, res, next){
+    Statistika.findOne({agregat: "Benzin"}, function(err, foundAgregat){
+      if (!err){
+        res.locals.benzinBroj = foundAgregat.broj;
+        res.locals.benzinKolicina = foundAgregat.kolicina;
+        next();
+      }else {
+        res.redirect("/");
+      }
+    })
+  }
+
+  function statistikaBenzin2 (req, res, next){
+    Statistika.findOne({agregat: "Benzin2"}, function(err, foundAgregat){
+      if (!err){
+        res.locals.benzin2Broj = foundAgregat.broj;
+        res.locals.benzin2Kolicina = foundAgregat.kolicina;
+        next();
+      }else {
+        res.redirect("/");
+      }
+    })
+  }
+
+  function statistikaDisel (req, res, next){
+    Statistika.findOne({agregat: "Disel"}, function(err, foundAgregat){
+      if (!err){
+        res.locals.diselBroj = foundAgregat.broj;
+        res.locals.diselKolicina = foundAgregat.kolicina;
+        next();
+      }else {
+        res.redirect("/");
+      }
+    })
+  }
+
+  function statistikaDisel2 (req, res, next){
+    Statistika.findOne({agregat: "Disel2"}, function(err, foundAgregat){
+      if (!err){
+        res.locals.disel2Broj = foundAgregat.broj;
+        res.locals.disel2Kolicina = foundAgregat.kolicina;
+        next();
+      }else {
+        res.redirect("/");
+      }
+    })
+  }
+
+  function statistikaPlin (req, res, next){
+    Statistika.findOne({agregat: "Plin"}, function(err, foundAgregat){
+      if (!err){
+        res.locals.plinBroj = foundAgregat.broj;
+        res.locals.plinKolicina = foundAgregat.kolicina;
+        next();
+      }else {
+        res.redirect("/");
+      }
+    })
+  }
+
+  function statistikaUNP (req, res, next){
+    Statistika.findOne({agregat: "UNP"}, function(err, foundAgregat){
+      if (!err){
+        res.locals.unpBroj = foundAgregat.broj;
+        res.locals.unpKolicina = foundAgregat.kolicina;
+        next();
+      }else {
+        res.redirect("/");
+      }
+    })
   }
 
 function renderAgregatiAdmin(req, res) {
@@ -1706,6 +1800,8 @@ app.post("/filteriProdaja", function(req, res) {
 app.post("/benzinProdaja", function(req, res) {
   const prodano = req.body.Prodano_Benzin;
 
+
+
   Zauzece.findOne({agregat: "Benzin"}, function(err, foundAgregat){
     if(foundAgregat.value === "orange"){
       Agregati.findOne({
@@ -1720,7 +1816,13 @@ app.post("/benzinProdaja", function(req, res) {
           }, function(err) {
             if (!err) {
               Zauzece.updateMany({agregat: "Benzin"}, {value: "green"}, function(){
-                res.redirect("/djelatnik/prodaja");
+                Statistika.findOne({agregat:"Benzin"}, function(err, agr) {
+                  const broj = agr.broj;
+                  const kolicina = agr.kolicina;
+                  Statistika.updateMany({agregat: "Benzin"}, {broj: broj+1, kolicina: kolicina + +prodano}, function(){
+                    res.redirect("/djelatnik/prodaja");
+                  })
+                })
               });
             } else {
               res.redirect("/");
@@ -1754,8 +1856,15 @@ app.post("/benzin2Prodaja", function(req, res) {
           }, function(err) {
             if (!err) {
               Zauzece.updateMany({agregat: "Benzin2"}, {value: "green"}, function(){
-                res.redirect("/djelatnik/prodaja");
+                Statistika.findOne({agregat:"Benzin2"}, function(err, agr) {
+                  const broj = agr.broj;
+                  const kolicina = agr.kolicina;
+                  Statistika.updateMany({agregat: "Benzin2"}, {broj: broj+1, kolicina: kolicina + +prodano}, function(){
+                    res.redirect("/djelatnik/prodaja");
+                  })
+                })
               });
+
             } else {
               res.redirect("/");
             }
@@ -1788,8 +1897,15 @@ app.post("/diselProdaja", function(req, res) {
           }, function(err) {
             if (!err) {
               Zauzece.updateMany({agregat: "Disel"}, {value: "green"}, function(){
-                res.redirect("/djelatnik/prodaja");
+                Statistika.findOne({agregat:"Disel"}, function(err, agr) {
+                  const broj = agr.broj;
+                  const kolicina = agr.kolicina;
+                  Statistika.updateMany({agregat: "Disel"}, {broj: broj+1, kolicina: kolicina + +prodano}, function(){
+                    res.redirect("/djelatnik/prodaja");
+                  })
+                })
               });
+
             } else {
               res.redirect("/");
             }
@@ -1822,8 +1938,15 @@ app.post("/diselImperiumProdaja", function(req, res) {
           }, function(err) {
             if (!err) {
               Zauzece.updateMany({agregat: "Disel2"}, {value: "green"}, function(){
-                res.redirect("/djelatnik/prodaja");
+                Statistika.findOne({agregat:"Disel2"}, function(err, agr) {
+                  const broj = agr.broj;
+                  const kolicina = agr.kolicina;
+                  Statistika.updateMany({agregat: "Disel2"}, {broj: broj+1, kolicina: kolicina + +prodano}, function(){
+                    res.redirect("/djelatnik/prodaja");
+                  })
+                })
               });
+
             } else {
               res.redirect("/");
             }
@@ -1856,8 +1979,15 @@ app.post("/plinProdaja", function(req, res) {
           }, function(err) {
             if (!err) {
               Zauzece.updateMany({agregat: "Plin"}, {value: "green"}, function(){
-                res.redirect("/djelatnik/prodaja");
+                Statistika.findOne({agregat:"Plin"}, function(err, agr) {
+                  const broj = agr.broj;
+                  const kolicina = agr.kolicina;
+                  Statistika.updateMany({agregat: "Plin"}, {broj: broj+1, kolicina: kolicina + +prodano}, function(){
+                    res.redirect("/djelatnik/prodaja");
+                  })
+                })
               });
+
             } else {
               res.redirect("/");
             }
@@ -1887,7 +2017,13 @@ app.post("/unpProdaja", function(req, res) {
         stanje: x - prodano
       }, function(err) {
         if (!err) {
-          res.redirect("/djelatnik/prodaja");
+          Statistika.findOne({agregat:"UNP"}, function(err, agr) {
+            const broj = agr.broj;
+            const kolicina = agr.kolicina;
+            Statistika.updateMany({agregat: "UNP"}, {broj: broj+1, kolicina: kolicina + +prodano}, function(){
+              res.redirect("/djelatnik/prodaja");
+            })
+          })
         } else {
           res.redirect("/");
         }
@@ -1901,7 +2037,7 @@ app.post("/unpProdaja", function(req, res) {
 ////////////////////////////AGREGATI USER//////////////////////////////////////////
 
 
-app.get("/djelatnik/agregati", provjeraAgregata, zauzeceBenzin, zauzeceBenzin2, zauzeceDisel, zauzeceDisel2, zauzecePlin, renderAgregata);
+app.get("/djelatnik/agregati", provjeraUseraAgregati, provjeraAgregata, zauzeceBenzin, zauzeceBenzin2, zauzeceDisel, zauzeceDisel2, zauzecePlin, zauzecePumpa, renderAgregata);
 
 function provjeraUseraAgregati(req, res, next) {
   if (req.isAuthenticated() && req.user.role === "user") {
