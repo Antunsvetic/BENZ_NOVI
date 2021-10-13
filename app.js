@@ -181,10 +181,13 @@ const stat = new Statistika({
 //}
 //});
 
+let foundUser = 0;
 
-app.get("/", function(req, res) {
+app.get("/", function(req, res){
   res.render("home");
-})
+});
+
+
 
 app.get("/admin", provjeraAdmina, benzinCheck, benzin2Check, dizelCheck, dizel2Check, plinCheck, unpCheck, renderAdminPage);
 
@@ -1018,6 +1021,7 @@ app.post("/unp", function(req, res) {
 //////////////////////////********** FORUM GET AND POST ********///////////////
 app.get("/forum", function(req, res) {
   if (req.isAuthenticated()) {
+    const rolaUsera = req.user.role;
     Forum.find({
       "komentar": {
         $ne: null
@@ -1028,7 +1032,8 @@ app.get("/forum", function(req, res) {
       } else {
         if (foundUsers) {
           res.render("forum", {
-            userSaKomentarom: foundUsers
+            userSaKomentarom: foundUsers,
+            rolaUsera: rolaUsera
           });
         }
       }
@@ -1067,9 +1072,7 @@ app.post("/kreiraj", function(req, res) {
     if (err) {
       console.log(err);
     } else {
-      passport.authenticate("local")(req, res, function() {
-        res.redirect("/kreiraj");
-      });
+      res.redirect("/kreiraj")
     }
   });
 });
@@ -1078,14 +1081,11 @@ app.get("/statistika", function(req, res) {
 
   if (req.isAuthenticated() && req.user.role === "admin") {
 
-    User.find({
-      "ime": {
+    User.find({"ime": {
         $ne: null
       }
     }, function(err, foundUsers) {
-      res.render("statistika", {
-        foundUsers: foundUsers
-      });
+      res.render("statistika", {foundUsers: foundUsers});
     });
   } else {
     res.redirect("/");
@@ -1104,19 +1104,12 @@ app.post("/deleteDjelatnik", function(req, res) {
 
 ////////////////////*********** CRUDS FOR USER *****************/////////////
 
-let foundUser = 0;
 
-app.get("/djelatnik", djelatnikLoginCheck,
-  ponedjeljakPrva, ponedjeljakDruga, ponedjeljakTreca,
-  utorakPrva, utorakDruga, utorakTreca,
-  srijedaPrva, srijedaDruga, srijedaTreca,
-  cetvrtakPrva, cetvrtakDruga, cetvrtakTreca,
-  petakPrva, petakDruga, petakTreca,
-  subotaPrva, subotaDruga, subotaTreca,
-  nedjeljaPrva, nedjeljaDruga, nedjeljaTreca
-);
+
+app.get("/djelatnik", djelatnikLoginCheck, provjeraRasporeda);
 
 function djelatnikLoginCheck(req, res, next) {
+  foundUser = 0;
   if (req.isAuthenticated() && req.user.role === "user") {
     res.render("userHomePage", {
       loggedUser: req.user._id
@@ -1126,281 +1119,6 @@ function djelatnikLoginCheck(req, res, next) {
     res.redirect("/");
   }
 };
-
-
-function ponedjeljakPrva(req, res, next) {
-  Ponedjeljak.findOne({
-    prva: req.user.ime
-  }, function(err, user) {
-    if (user) {
-      foundUser = foundUser + 1;
-      next();
-    } else {
-      next();
-    }
-  });
-};
-
-function ponedjeljakDruga(req, res, next) {
-  Ponedjeljak.findOne({
-    druga: req.user.ime
-  }, function(err, user) {
-    if (user) {
-      foundUser = foundUser + 1;
-      next();
-    } else {
-      next();
-    }
-  });
-};
-
-function ponedjeljakTreca(req, res, next) {
-  Ponedjeljak.findOne({
-    treca: req.user.ime
-  }, function(err, user) {
-    if (user) {
-      foundUser = foundUser + 1;
-      next();
-    } else {
-      next();
-    }
-  });
-};
-
-function utorakPrva(req, res, next) {
-  Utorak.findOne({
-    prva: req.user.ime
-  }, function(err, user) {
-    if (user) {
-      foundUser = foundUser + 1;
-      next();
-    } else {
-      next();
-    }
-  });
-};
-
-function utorakDruga(req, res, next) {
-  Utorak.findOne({
-    druga: req.user.ime
-  }, function(err, user) {
-    if (user) {
-      foundUser = foundUser + 1;
-      next();
-    } else {
-      next();
-    }
-  });
-};
-
-function utorakTreca(req, res, next) {
-  Utorak.findOne({
-    treca: req.user.ime
-  }, function(err, user) {
-    if (user) {
-      foundUser = foundUser + 1;
-      next();
-    } else {
-      next();
-    }
-  });
-};
-
-function srijedaPrva(req, res, next) {
-  Srijeda.findOne({
-    prva: req.user.ime
-  }, function(err, user) {
-    if (user) {
-      foundUser = foundUser + 1;
-      next();
-    } else {
-      next();
-    }
-  });
-};
-
-function srijedaDruga(req, res, next) {
-  Srijeda.findOne({
-    druga: req.user.ime
-  }, function(err, user) {
-    if (user) {
-      foundUser = foundUser + 1;
-      next();
-    } else {
-      next();
-    }
-  });
-};
-
-function srijedaTreca(req, res, next) {
-  Srijeda.findOne({
-    treca: req.user.ime
-  }, function(err, user) {
-    if (user) {
-      foundUser = foundUser + 1;
-      next();
-    } else {
-      next();
-    }
-  });
-};
-
-function cetvrtakPrva(req, res, next) {
-  Cetvrtak.findOne({
-    prva: req.user.ime
-  }, function(err, user) {
-    if (user) {
-      foundUser = foundUser + 1;
-      next();
-    } else {
-      next();
-    }
-  });
-};
-
-function cetvrtakDruga(req, res, next) {
-  Cetvrtak.findOne({
-    druga: req.user.ime
-  }, function(err, user) {
-    if (user) {
-      foundUser = foundUser + 1;
-      next();
-    } else {
-      next();
-    }
-  });
-};
-
-function cetvrtakTreca(req, res, next) {
-  Cetvrtak.findOne({
-    treca: req.user.ime
-  }, function(err, user) {
-    if (user) {
-      foundUser = foundUser + 1;
-      next();
-    } else {
-      next();
-    }
-  });
-};
-
-function petakPrva(req, res, next) {
-  Petak.findOne({
-    prva: req.user.ime
-  }, function(err, user) {
-    if (user) {
-      foundUser = foundUser + 1;
-      next();
-    } else {
-      next();
-    }
-  });
-};
-
-function petakDruga(req, res, next) {
-  Petak.findOne({
-    druga: req.user.ime
-  }, function(err, user) {
-    if (user) {
-      foundUser = foundUser + 1;
-      next();
-    } else {
-      next();
-    }
-  });
-};
-
-function petakTreca(req, res, next) {
-  Petak.findOne({
-    treca: req.user.ime
-  }, function(err, user) {
-    if (user) {
-      foundUser = foundUser + 1;
-      next();
-    } else {
-      next();
-    }
-  });
-};
-
-function subotaPrva(req, res, next) {
-  Subota.findOne({
-    prva: req.user.ime
-  }, function(err, user) {
-    if (user) {
-      foundUser = foundUser + 1;
-      next();
-    } else {
-      next();
-    }
-  });
-};
-
-function subotaDruga(req, res, next) {
-  Subota.findOne({
-    druga: req.user.ime
-  }, function(err, user) {
-    if (user) {
-      foundUser = foundUser + 1;
-      next();
-    } else {
-      next();
-    }
-  });
-};
-
-function subotaTreca(req, res, next) {
-  Subota.findOne({
-    treca: req.user.ime
-  }, function(err, user) {
-    if (user) {
-      foundUser = foundUser + 1;
-      next();
-    } else {
-      next();
-    }
-  });
-};
-
-function nedjeljaPrva(req, res, next) {
-  Nedjelja.findOne({
-    prva: req.user.ime
-  }, function(err, user) {
-    if (user) {
-      foundUser = foundUser + 1;
-      next();
-    } else {
-      next();
-    }
-  });
-};
-
-function nedjeljaDruga(req, res, next) {
-  Nedjelja.findOne({
-    druga: req.user.ime
-  }, function(err, user) {
-    if (user) {
-      foundUser = foundUser + 1;
-      next();
-    } else {
-      next();
-    }
-  });
-};
-
-function nedjeljaTreca(req, res, next) {
-  Nedjelja.findOne({
-    treca: req.user.ime
-  }, function(err, user) {
-    if (user) {
-      foundUser = foundUser + 1;
-      next();
-    } else {
-      next();
-    }
-  });
-};
-
 
 
 ////////////// LOGIN ZA USERA /////////////
@@ -1421,6 +1139,7 @@ app.post("/user", function(req, res) {
     }
   });
 });
+
 
 app.get("/djelatnik/proizvodi", function(req, res) {
   if (req.isAuthenticated() && req.user.role === "user") {
@@ -2496,7 +2215,239 @@ function findUserName(req, res, next) {
   });
 };
 
+function provjeraRasporeda(req, res, next) {
+  Ponedjeljak.findOne({
+    prva: req.user.ime
+  }, function(err, user) {
+    if (user) {
+      foundUser = foundUser + 1;
+      next();
+    } else {
+      next();
+    }
+  });
 
+  Ponedjeljak.findOne({
+    druga: req.user.ime
+  }, function(err, user) {
+    if (user) {
+      foundUser = foundUser + 1;
+      next();
+    } else {
+      next();
+    }
+  });
+
+  Ponedjeljak.findOne({
+    treca: req.user.ime
+  }, function(err, user) {
+    if (user) {
+      foundUser = foundUser + 1;
+      next();
+    } else {
+      next();
+    }
+  });
+
+  Utorak.findOne({
+    prva: req.user.ime
+  }, function(err, user) {
+    if (user) {
+      foundUser = foundUser + 1;
+      next();
+    } else {
+      next();
+    }
+  });
+
+  Utorak.findOne({
+    druga: req.user.ime
+  }, function(err, user) {
+    if (user) {
+      foundUser = foundUser + 1;
+      next();
+    } else {
+      next();
+    }
+  });
+
+  Utorak.findOne({
+    treca: req.user.ime
+  }, function(err, user) {
+    if (user) {
+      foundUser = foundUser + 1;
+      next();
+    } else {
+      next();
+    }
+  });
+
+  Srijeda.findOne({
+    prva: req.user.ime
+  }, function(err, user) {
+    if (user) {
+      foundUser = foundUser + 1;
+      next();
+    } else {
+      next();
+    }
+  });
+
+  Srijeda.findOne({
+    druga: req.user.ime
+  }, function(err, user) {
+    if (user) {
+      foundUser = foundUser + 1;
+      next();
+    } else {
+      next();
+    }
+  });
+
+  Srijeda.findOne({
+    treca: req.user.ime
+  }, function(err, user) {
+    if (user) {
+      foundUser = foundUser + 1;
+      next();
+    } else {
+      next();
+    }
+  });
+
+  Cetvrtak.findOne({
+    prva: req.user.ime
+  }, function(err, user) {
+    if (user) {
+      foundUser = foundUser + 1;
+      next();
+    } else {
+      next();
+    }
+  });
+
+  Cetvrtak.findOne({
+    druga: req.user.ime
+  }, function(err, user) {
+    if (user) {
+      foundUser = foundUser + 1;
+      next();
+    } else {
+      next();
+    }
+  });
+
+  Cetvrtak.findOne({
+    treca: req.user.ime
+  }, function(err, user) {
+    if (user) {
+      foundUser = foundUser + 1;
+      next();
+    } else {
+      next();
+    }
+  });
+
+  Petak.findOne({
+    prva: req.user.ime
+  }, function(err, user) {
+    if (user) {
+      foundUser = foundUser + 1;
+      next();
+    } else {
+      next();
+    }
+  });
+
+  Petak.findOne({
+    druga: req.user.ime
+  }, function(err, user) {
+    if (user) {
+      foundUser = foundUser + 1;
+      next();
+    } else {
+      next();
+    }
+  });
+
+  Petak.findOne({
+    treca: req.user.ime
+  }, function(err, user) {
+    if (user) {
+      foundUser = foundUser + 1;
+      next();
+    } else {
+      next();
+    }
+  });
+
+  Subota.findOne({
+    prva: req.user.ime
+  }, function(err, user) {
+    if (user) {
+      foundUser = foundUser + 1;
+      next();
+    } else {
+      next();
+    }
+  });
+
+  Subota.findOne({
+    druga: req.user.ime
+  }, function(err, user) {
+    if (user) {
+      foundUser = foundUser + 1;
+      next();
+    } else {
+      next();
+    }
+  });
+
+  Subota.findOne({
+    treca: req.user.ime
+  }, function(err, user) {
+    if (user) {
+      foundUser = foundUser + 1;
+      next();
+    } else {
+      next();
+    }
+  });
+
+  Nedjelja.findOne({
+    prva: req.user.ime
+  }, function(err, user) {
+    if (user) {
+      foundUser = foundUser + 1;
+      next();
+    } else {
+      next();
+    }
+  });
+
+  Nedjelja.findOne({
+    druga: req.user.ime
+  }, function(err, user) {
+    if (user) {
+      foundUser = foundUser + 1;
+      next();
+    } else {
+      next();
+    }
+  });
+
+  Nedjelja.findOne({
+    treca: req.user.ime
+  }, function(err, user) {
+    if (user) {
+      foundUser = foundUser + 1;
+      isValid = true;
+      next();
+    } else {
+      next();
+    }
+  });
+}
 
 function ispisRadnihSati(req, res, next) {
   res.locals.radniSati = foundUser * 8;

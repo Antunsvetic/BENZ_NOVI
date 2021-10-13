@@ -107,6 +107,16 @@
     margin-right: 5%;
   }
 
+  .obavjesti{
+    position: absolute;
+    right:0;
+    top:0;
+    margin-top: 2rem;
+    margin-right: 2rem;
+    background: white;
+    color: red;
+  }
+
   </style>
 
 </head>
@@ -124,6 +134,10 @@
     <a role="button" class="Agregati" href="/agregati">Agregati</a>
     <a role="button" class="Statistika" href="/statistika">Djelatnici</a>
     </div>
+
+    <div class="obavjesti">
+
+
 
   <% if( stanjeBenzina < 250 ){ %>
     <p>Stanje EuroSuper95 je manje od 250</p>
@@ -148,6 +162,8 @@
   <% if( stanjeUNP < 250 ){ %>
     <p>Stanje UNP je manje od 250</p>
   <% } %>
+
+  </div>
 
     <form action="/logout" method="post">
       <button type="submit" class="btn btn-outline-dark btn-md logoutBtn" name="button">Logout</button>

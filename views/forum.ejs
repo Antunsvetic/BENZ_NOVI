@@ -8,9 +8,7 @@
 
   <style>
     .TekstUnos{
-      position: absolute;
       width: 50%;
-      bottom: 0;
       border: 3px solid #8AC007
 
     }
@@ -32,12 +30,24 @@
 </head>
 
 <body>
-
-
+<%let rola = ""; %>
+<% if(rolaUsera === "admin"){%>
+  <%rola = "admin";%>
+<%}else{%>
+  <%rola = "djelatnik";%>
+<%}%>
+<a href="/<%= rola %>" class="Nazad">Nazad</a>
 
   <div class="Naslov">
     <h1>Benz forum</h1>
   </div>
+  <form class="TekstUnos" action="/forum" method="post">
+    <div class=" mb-3">
+      <label for="exampleFormControlTextarea1" class="form-label">Unesite tekst:</label>
+      <textarea class="form-control" id="exampleFormControlTextarea1" name="komentar" rows="2"></textarea>
+      <button type="submit" class="Objavi btn btn-primary">Objavi</button>
+    </div>
+  </form>
 
 <% userSaKomentarom.forEach(function(user) { %>
   <hr>
@@ -48,13 +58,7 @@
 
 
 
-  <form class="TekstUnos" action="/forum" method="post">
-    <div class=" mb-3">
-      <label for="exampleFormControlTextarea1" class="form-label">Unesite tekst:</label>
-      <textarea class="form-control" id="exampleFormControlTextarea1" name="komentar" rows="3"></textarea>
-      <button type="submit" class="Objavi btn btn-primary">Objavi</button>
-    </div>
-  </form>
+
 
 </body>
 
